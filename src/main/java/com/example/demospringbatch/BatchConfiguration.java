@@ -3,6 +3,7 @@ package com.example.demospringbatch;
 import com.example.demospringbatch.listener.JobListener;
 import com.example.demospringbatch.model.Persona;
 import com.example.demospringbatch.processor.PersonaItemProcessor;
+import org.hsqldb.util.DatabaseManagerSwing;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
@@ -20,6 +21,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 
+import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
 
 
@@ -84,5 +86,14 @@ public class BatchConfiguration {
                 .writer(writer)
                 .build();
 
+    }
+
+    /**
+     * Display a Swing GUI to manage the in-memory DB.
+     * N.B. Whenever the GUI is closed, so does the application.
+     */
+    @PostConstruct
+    public void getDbManager() {
+        DatabaseManagerSwing.main(new String[]{"--url", "jdbc:hsqldb:mem:testdb", "--user", "sa", "--password", ""});
     }
 }
